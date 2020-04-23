@@ -33,12 +33,11 @@ def registro_usuario():
         password = request.form['password']
         password_confirmation = request.form['password2']
 
+        respuesta = ""
         cur = mysql.connection.cursor()
+
         comprobacion = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
         
-        print(comprobacion)
-        respuesta = ""
-
         if not comprobacion:
             # Si el usuario no existe, insertarlo.
 
@@ -73,14 +72,29 @@ def registro_veterinario():
         password = request.form['password']
         password_confirmation = request.form['password2']
 
-        print(username)
-        print(direccion)
-        print(num_tarjeta)
-        print(email)
-        print(password)
-        print(password_confirmation)
+        respuesta = ''
+        cur = mysql.connection.cursor()
 
-        return 'veterinario registrado con éxito'
+        comprobacion = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
+
+        if not comprobacion:
+            # Si el usuario no existe, registrarlo en la base de datos
+
+            if password == password_confirmation:
+                # Si la contraseña no es igual a la confirmación.
+                ts = time.time()
+                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                cur.execute("INSERT INTO veterinario(nombre_veterinario, direccion_veterinario, fecha_registro_veterinario, numero_tarjeta, correo_veterinario, contraseña_veterinario) VALUES(%s, %s, %s, %s, %s, %s)",
+                (username, direccion, timestamp, num_tarjeta, email, password))
+                mysql.connection.commit()
+                respuesta = "Veterinario registrado exitosamente"
+            else:
+                respuesta = "Las contraseñas no coinciden"
+        else:
+            respuesta = "El usuario ya se encuentra registrado"
+
+        return respuesta
     
 if __name__ == '__main__':
     
