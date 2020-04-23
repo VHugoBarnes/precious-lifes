@@ -36,9 +36,10 @@ def registro_usuario():
         respuesta = ""
         cur = mysql.connection.cursor()
 
-        comprobacion = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
+        comprobacion_usuario = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
+        comprobacion_veterinario = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
         
-        if not comprobacion:
+        if not comprobacion_usuario and not comprobacion_veterinario:
             # Si el usuario no existe, insertarlo.
 
             if password == password_confirmation:
@@ -54,9 +55,12 @@ def registro_usuario():
                 respuesta = "Usuario registrado exitosamente"
             else:
                 respuesta = "Las contraseñas no coinciden"
+        elif comprobacion_veterinario:
+            # Si el usuario ya existe en como otro tipo de usuario
+            respuesta = "El usuario ya se encuentra registrado como veterinario."
         else:
             # Si el usuario ya existe no insertarlo de nuevo.
-            respuesta = "Ya existe una cuenta con ese correo."
+            respuesta = "El usuario ya se encuentra registrado como usurario normal."
 
         return respuesta
 
@@ -75,10 +79,11 @@ def registro_veterinario():
         respuesta = ''
         cur = mysql.connection.cursor()
 
-        comprobacion = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
+        comprobacion_veterinario = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
+        comprobacion_usuairo = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
 
-        if not comprobacion:
-            # Si el usuario no existe, registrarlo en la base de datos
+        if not comprobacion_veterinario and not comprobacion_usuairo:
+            # Si el usuario no existe como usuario tipo veterinario o normal
 
             if password == password_confirmation:
                 # Si la contraseña no es igual a la confirmación.
@@ -91,8 +96,12 @@ def registro_veterinario():
                 respuesta = "Veterinario registrado exitosamente"
             else:
                 respuesta = "Las contraseñas no coinciden"
+        elif comprobacion_usuairo:
+            # Si el usuario ya existe en como otro tipo de usuario
+            respuesta = "El usuario ya se encuentra registrado como usuario normal."
         else:
-            respuesta = "El usuario ya se encuentra registrado"
+            # Si el usuario ya existe no insertarlo de nuevo.
+            respuesta = "El usuario ya se encuentra registrado como veterinario"
 
         return respuesta
     
