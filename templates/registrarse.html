@@ -1,0 +1,51 @@
+<html>
+<head>
+<title> Precios Lifes Registro </title>   
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}">
+</head>
+<body>
+
+    <div id="login-box">
+      <div class="left-box">
+        <h1> Registrarse</h1>
+          <a type="text">Si eres voluntario:</a><br>
+          <br>
+          
+          <form action="", method="POST">
+            <input type="text" name="username" placeholder="Usuario"/>
+            <input type="text" name="numtarjeta" placeholder="Ingrese numero de tarjeta"/>
+            <input type="text" name="fecha" placeholder="Fecha de registro"/>
+            <input type="text" name="email" placeholder="Correo electronico"/>
+            <input type="password" name="password" placeholder="Contrasena"/>
+            <input type="password" name="password2" placeholder="Comprobar contrasena"/>
+          
+            <input type="submit" name="signup-button" value="Registrarse"/>
+          </form>
+        
+          <br><a type="text">Si eres veterinario:</a></br>
+        <br>
+          <input type="text" name="username" placeholder="Nombre"/>
+          <input type="text" name="numtarjeta" placeholder="Direccion: calle, #, colonia"/>
+          <input type="text" name="fecha" placeholder="Fecha de registro"/>
+          <input type="text" name="email" placeholder="Ingrese numero de tarjeta"/>
+          <input type="password" name="password" placeholder="Correo"/>
+          <input type="password" name="password2" placeholder="Contrasena"/>
+          
+          
+          <input type="submit" name="signup-button" value="Registrarse"/>
+        
+        </div>
+        <div class="right-box">
+          <span class="signinwith">Sign in with<br/>Social Network     </span>
+        
+        <button class="social facebook">Log in with Facebook</button>    
+        <button class="social twitter">Log in with Twitter</button> 
+        <button class="social google">Log in with Google+</button> 
+            
+        
+        </div>
+        <div class="or">OR</div>
+    </div>
+    
+</body>    
+</html>
