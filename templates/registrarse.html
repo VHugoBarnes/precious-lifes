@@ -1,7 +1,10 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<title> Precios Lifes Registro </title>   
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Precious Lifes Registro </title>    
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}">
 </head>
 <body>
 
@@ -11,28 +14,29 @@
           <a type="text">Si eres voluntario:</a><br>
           <br>
           
-          <form action="", method="POST">
-            <input type="text" name="username" placeholder="Usuario"/>
-            <input type="text" name="numtarjeta" placeholder="Ingrese numero de tarjeta"/>
-            <input type="text" name="fecha" placeholder="Fecha de registro"/>
-            <input type="text" name="email" placeholder="Correo electronico"/>
-            <input type="password" name="password" placeholder="Contrasena"/>
-            <input type="password" name="password2" placeholder="Comprobar contrasena"/>
-          
-            <input type="submit" name="signup-button" value="Registrarse"/>
-          </form>
+            <form action="/registro_usuario", method="POST">
+              <input type="text" name="username" placeholder="Usuario"/>
+              <input type="text" name="numtarjeta" placeholder="Ingrese numero de tarjeta"/>
+              <input type="text" name="email" placeholder="Correo electronico"/>
+              <input type="password" name="password" placeholder="Contraseña"/>
+              <input type="password" name="password2" placeholder="Comprobar contraseña"/>
+            
+              <input type="submit" name="signup-button" value="Registrarse"/>
+            </form>
         
           <br><a type="text">Si eres veterinario:</a></br>
         <br>
-          <input type="text" name="username" placeholder="Nombre"/>
-          <input type="text" name="numtarjeta" placeholder="Direccion: calle, #, colonia"/>
-          <input type="text" name="fecha" placeholder="Fecha de registro"/>
-          <input type="text" name="email" placeholder="Ingrese numero de tarjeta"/>
-          <input type="password" name="password" placeholder="Correo"/>
-          <input type="password" name="password2" placeholder="Contrasena"/>
           
-          
-          <input type="submit" name="signup-button" value="Registrarse"/>
+          <form action="/registro_veterinario" method="post">
+            <input type="text" name="username" placeholder="Nombre"/>
+            <input type="text" name="direccion" placeholder="Direccion: calle, #, colonia"/>
+            <input type="text" name="numtarjeta" placeholder="Ingrese numero de tarjeta"/>
+            <input type="text" name="email" placeholder="Correo"/>
+            <input type="password" name="password" placeholder="Contraseña"/>
+            <input type="password" name="password2" placeholder="Comprobar contraseña"/>
+            
+            <input type="submit" name="signup-button" value="Registrarse"/>
+          </form>
         
         </div>
         <div class="right-box">
