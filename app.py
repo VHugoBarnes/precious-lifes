@@ -6,6 +6,9 @@ from flask_mysqldb import MySQL
 import time
 import datetime
 
+import re
+
+# Declaraciones necesarias para iniciar el server
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -47,15 +50,21 @@ def registro_usuario():
 
             if password == password_confirmation:
                 # Si las contraseñas coinciden
+                # Las contraseñas coinciden, ahora a evaluar las restricciones
 
-                # timestamp
-                ts = time.time()
-                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                if re.fullmatch(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$", password):
 
-                cur.execute("INSERT INTO usuario(nombre_usuario, numero_tarjeta, fecha_registro_usuario, correo_usuario, contraseña_usuario) VALUES(%s,%s,%s,%s,%s)",
-                (username, num_tarjeta, timestamp, email, password))
-                mysql.connection.commit()
-                respuesta = "Usuario registrado exitosamente"
+                    # timestamp
+                    ts = time.time()
+                    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                    cur.execute("INSERT INTO usuario(nombre_usuario, numero_tarjeta, fecha_registro_usuario, correo_usuario, contraseña_usuario) VALUES(%s,%s,%s,%s,%s)",
+                    (username, num_tarjeta, timestamp, email, password))
+                    mysql.connection.commit()
+                    respuesta = "Usuario registrado exitosamente"
+                else:
+                    respuesta = "La contraseña debe contener de 8 a 30 caracteres, al menos un numero y sin signos especiales"
+            
             else:
                 respuesta = "Las contraseñas no coinciden"
 
@@ -99,13 +108,19 @@ def registro_veterinario():
 
             if password == password_confirmation:
                 # Si la contraseña no es igual a la confirmación.
-                ts = time.time()
-                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                # Las contraseñas coinciden, ahora a evaluar las restricciones
 
-                cur.execute("INSERT INTO veterinario(nombre_veterinario, direccion_veterinario, fecha_registro_veterinario, numero_tarjeta, correo_veterinario, contraseña_veterinario) VALUES(%s, %s, %s, %s, %s, %s)",
-                (username, direccion, timestamp, num_tarjeta, email, password))
-                mysql.connection.commit()
-                respuesta = "Veterinario registrado exitosamente"
+                if re.fullmatch(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$", password):
+                    ts = time.time()
+                    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                    cur.execute("INSERT INTO veterinario(nombre_veterinario, direccion_veterinario, fecha_registro_veterinario, numero_tarjeta, correo_veterinario, contraseña_veterinario) VALUES(%s, %s, %s, %s, %s, %s)",
+                    (username, direccion, timestamp, num_tarjeta, email, password))
+                    mysql.connection.commit()
+                    respuesta = "Veterinario registrado exitosamente"
+                else:
+                    respuesta = "La contraseña debe contener de 8 a 30 caracteres, al menos un numero y sin signos especiales"
+            
             else:
                 respuesta = "Las contraseñas no coinciden"
 
