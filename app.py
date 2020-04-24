@@ -2,6 +2,7 @@
 
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
+from flask_bcrypt import generate_password_hash
 
 import time
 import datetime
@@ -57,9 +58,9 @@ def registro_usuario():
                     # timestamp
                     ts = time.time()
                     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-
+                    contrasena = generate_password_hash(password, 12)
                     cur.execute("INSERT INTO usuario(nombre_usuario, numero_tarjeta, fecha_registro_usuario, correo_usuario, contraseña_usuario) VALUES(%s,%s,%s,%s,%s)",
-                    (username, num_tarjeta, timestamp, email, password))
+                    (username, num_tarjeta, timestamp, email, contrasena))
                     mysql.connection.commit()
                     respuesta = "Usuario registrado exitosamente"
                 else:
@@ -113,9 +114,9 @@ def registro_veterinario():
                 if re.fullmatch(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$", password):
                     ts = time.time()
                     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-
+                    contrasena = generate_password_hash(password, 12)
                     cur.execute("INSERT INTO veterinario(nombre_veterinario, direccion_veterinario, fecha_registro_veterinario, numero_tarjeta, correo_veterinario, contraseña_veterinario) VALUES(%s, %s, %s, %s, %s, %s)",
-                    (username, direccion, timestamp, num_tarjeta, email, password))
+                    (username, direccion, timestamp, num_tarjeta, email, contrasena))
                     mysql.connection.commit()
                     respuesta = "Veterinario registrado exitosamente"
                 else:
