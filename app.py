@@ -36,11 +36,14 @@ def registro_usuario():
         respuesta = ""
         cur = mysql.connection.cursor()
 
+        # Validaciones
         comprobacion_usuario = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
         comprobacion_veterinario = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
+        comprobacion_ncuenta_usuario = cur.execute("SELECT numero_tarjeta FROM usuario WHERE numero_tarjeta LIKE %s", [num_tarjeta])
+        comprobacion_ncuenta_veterinario = cur.execute("SELECT numero_tarjeta FROM veterinario WHERE numero_tarjeta LIKE %s", [num_tarjeta])
         
-        if not comprobacion_usuario and not comprobacion_veterinario:
-            # Si el usuario no existe, insertarlo.
+        if not comprobacion_usuario and not comprobacion_veterinario and not comprobacion_ncuenta_usuario and not comprobacion_ncuenta_veterinario:
+            # Si el correo y numero de cuenta no existe ya en otro tipo de usuario
 
             if password == password_confirmation:
                 # Si las contraseñas coinciden
@@ -55,9 +58,15 @@ def registro_usuario():
                 respuesta = "Usuario registrado exitosamente"
             else:
                 respuesta = "Las contraseñas no coinciden"
+
         elif comprobacion_veterinario:
             # Si el usuario ya existe en como otro tipo de usuario
             respuesta = "El usuario ya se encuentra registrado como veterinario."
+        
+        elif comprobacion_ncuenta_usuario or comprobacion_ncuenta_veterinario:
+            # Si el número de cuenta ya existe en la base de datos.
+            respuesta = "Ya existe una cuenta con ese número de tarjeta."
+
         else:
             # Si el usuario ya existe no insertarlo de nuevo.
             respuesta = "El usuario ya se encuentra registrado como usurario normal."
@@ -79,11 +88,14 @@ def registro_veterinario():
         respuesta = ''
         cur = mysql.connection.cursor()
 
+        # Validaciones
         comprobacion_veterinario = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
         comprobacion_usuairo = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
+        comprobacion_ncuenta_usuario = cur.execute("SELECT numero_tarjeta FROM usuario WHERE numero_tarjeta LIKE %s", [num_tarjeta])
+        comprobacion_ncuenta_veterinario = cur.execute("SELECT numero_tarjeta FROM veterinario WHERE numero_tarjeta LIKE %s", [num_tarjeta])
 
-        if not comprobacion_veterinario and not comprobacion_usuairo:
-            # Si el usuario no existe como usuario tipo veterinario o normal
+        if not comprobacion_veterinario and not comprobacion_usuairo and not comprobacion_ncuenta_usuario and not comprobacion_ncuenta_veterinario:
+            # Si el correo y numero de cuenta no existe ya en otro tipo de usuario
 
             if password == password_confirmation:
                 # Si la contraseña no es igual a la confirmación.
@@ -96,9 +108,15 @@ def registro_veterinario():
                 respuesta = "Veterinario registrado exitosamente"
             else:
                 respuesta = "Las contraseñas no coinciden"
+
         elif comprobacion_usuairo:
-            # Si el usuario ya existe en como otro tipo de usuario
+            # Si el usuario ya existe en como otro tipo de usuario.
             respuesta = "El usuario ya se encuentra registrado como usuario normal."
+
+        elif comprobacion_ncuenta_usuario or comprobacion_ncuenta_veterinario:
+            # Si el número de cuenta ya existe en la base de datos.
+            respuesta = "Ya existe una cuenta con ese número de tarjeta."
+        
         else:
             # Si el usuario ya existe no insertarlo de nuevo.
             respuesta = "El usuario ya se encuentra registrado como veterinario"
