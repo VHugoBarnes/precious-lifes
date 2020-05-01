@@ -1,8 +1,9 @@
 # coding: utf-8
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_mysqldb import MySQL
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
+from markupsafe import escape
 
 import time
 import datetime
@@ -11,6 +12,7 @@ import re
 
 # Declaraciones necesarias para iniciar el server
 app = Flask(__name__)
+app.secret_key = b'\xc0\xedv\x1a\x169\xb9\xb5\xa2\xe8a+\xe3\x8f\x9a\x9e'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
@@ -100,11 +102,11 @@ def registro_veterinario():
 
         # Validaciones
         comprobacion_veterinario = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
-        comprobacion_usuairo = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
+        comprobacion_usuario = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
         comprobacion_ncuenta_usuario = cur.execute("SELECT numero_tarjeta FROM usuario WHERE numero_tarjeta LIKE %s", [num_tarjeta])
         comprobacion_ncuenta_veterinario = cur.execute("SELECT numero_tarjeta FROM veterinario WHERE numero_tarjeta LIKE %s", [num_tarjeta])
 
-        if not comprobacion_veterinario and not comprobacion_usuairo and not comprobacion_ncuenta_usuario and not comprobacion_ncuenta_veterinario:
+        if not comprobacion_veterinario and not comprobacion_usuario and not comprobacion_ncuenta_usuario and not comprobacion_ncuenta_veterinario:
             # Si el correo y numero de cuenta no existe ya en otro tipo de usuario
 
             if password == password_confirmation:
@@ -125,7 +127,7 @@ def registro_veterinario():
             else:
                 respuesta = "Las contraseñas no coinciden"
 
-        elif comprobacion_usuairo:
+        elif comprobacion_usuario:
             # Si el usuario ya existe en como otro tipo de usuario.
             respuesta = "El usuario ya se encuentra registrado como usuario normal."
 
@@ -138,7 +140,61 @@ def registro_veterinario():
             respuesta = "El usuario ya se encuentra registrado como veterinario"
 
         return respuesta
-    
+
+
+@app.route('/iniciar_sesion', methods=['GET', 'POST'])
+def iniciar_sesion():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+        cur = mysql.connection.cursor()
+
+        comprobar_email_normal = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
+        comprobar_email_veterinario = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
+
+        
+        comprobar_password_veterinario = cur.execute("SELECT contraseña_veterinario FROM veterinario WHERE contraseña_veterinario LIKE %s", [encrypt_password])
+
+        # Comprobaciones
+        # Comprobación usuario
+        if comprobar_email_normal:
+            # Si se encuentra el correo en la tabla usuario
+            # Comprobar si las contraseñas encriptadas coinciden
+            comprobar_password_normal = cur.execute("SELECT contraseña_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
+            pass_normal = cur.fetchall()
+            if check_password_hash(str(pass_normal[0]), password):
+                # El correo y contraseña coinciden, pasa a guardarse la sesión
+                session['email'] = email
+                return redirect(url_for('perfil'))
+            else:
+                # Las contraseñas no coinciden
+                return 'Las contraseña no coincide'
+        # Comprobación veterinario
+        elif comprobar_email_veterinario:
+            # Si se encuentra el correo en la tabla usuario
+            # Comprobar si las contraseñas encriptadas coinciden
+            if comprobar_password_veterinario:
+                session['email'] = email
+                return redirect(url_for('perfil'))
+            else:
+                # Las contraseñas no coinciden
+                return 'La contraseña no coincide'
+
+        elif not comprobar_email_normal and not comprobar_email_veterinario:
+            # No se encontró el email en ninguna tabla
+            return 'El correo no se encuentra registrado en nuestra base de datos'
+
+    return render_template('iniciarsesion.html')
+
+
+@app.route('/perfil')
+def perfil():
+    if 'email' in session:
+        return 'Iniciado sesión con el correo: %s' % escape(session['email'])
+    return 'No has iniciado sessión'
+
+
 if __name__ == '__main__':
     
     app.run(port=3000, debug=True)
