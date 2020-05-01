@@ -15,8 +15,16 @@
 			<ul>
 				<li><a href="#">PRINCIPAL</a></li>
 				<li><a href="#">NOSOTROS</a></li>
-				<li><a href="registrarse">REGISTRARSE</a></li>
-				<li><a href="iniciar_sesion">INICIAR SESIÓN</a></li>
+				{% if sesion_iniciada %}
+					<li><a href="perfil">PERFIL</a></li>
+					<li><a href="cerrar_sesion">CERRAR SESIÓN</a></li>
+					{% if tipo_usuario == 'veterinario' %}
+						<li><a href="dar_alta">DAR DE ALTA</a></li>
+					{% endif %}
+				{% else %}
+					<li><a href="registrarse">REGISTRARSE</a></li>
+					<li><a href="iniciar_sesion">INICIAR SESIÓN</a></li>
+				{% endif %}
 			</ul>
 		</div>
 		<div class="title">

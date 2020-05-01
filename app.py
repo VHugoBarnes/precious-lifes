@@ -19,9 +19,69 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'preciouslifes'
 mysql = MySQL(app)
 
+
+def datos_sesion():
+
+    nombre_usuario = ''
+    num_tarjeta = ''
+    fecha_registro = ''
+
+    # Sesion iniciada
+    if 'email' in session:
+        sesion_iniciada = True
+    else:
+        sesion_iniciada = False
+
+    if 'tipo_usuario' in session:
+        cur = mysql.connection.cursor()
+        if session['tipo_usuario'] == 'normal':
+
+            tipo_usuario = 'normal'
+            cur.execute("SELECT nombre_usuario FROM usuario WHERE correo_usuario LIKE %s", [session['email']])
+            query = cur.fetchall()
+            nombre_usuario = query[0]
+
+            cur.execute("SELECT numero_tarjeta FROM usuario WHERE correo_usuario LIKE %s", [session['email']])
+            query2 = cur.fetchall()
+            num_tarjeta = query2[0]
+
+            cur.execute("SELECT fecha_registro_usuario FROM usuario WHERE correo_usuario LIKE %s", [session['email']])
+            query3 = cur.fetchall()
+            fecha_registro = query3[0]
+
+        elif session['tipo_usuario'] == 'veterinario':
+
+            tipo_usuario = 'veterinario'
+            cur.execute("SELECT nombre_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [session['email']])
+            query = cur.fetchall()
+            nombre_usuario = query[0]
+
+            cur.execute("SELECT numero_tarjeta FROM veterinario WHERE correo_veterinario LIKE %s", [session['email']])
+            query2 = cur.fetchall()
+            num_tarjeta = query2[0]
+
+            cur.execute("SELECT fecha_registro_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [session['email']])
+            query3 = cur.fetchall()
+            fecha_registro = query3[0]
+    else:
+        tipo_usuario = ''
+
+    datos = {
+        "sesion_iniciada": sesion_iniciada,
+        "tipo_usuario": tipo_usuario,
+        "nombre_usuario": nombre_usuario,
+        "num_tarjeta": num_tarjeta,
+        "fecha_registro": fecha_registro,
+    }
+
+    return datos
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    #session.pop('email', None)
+    datos = datos_sesion()
+    return render_template('index.html', **datos)
 
 
 @app.route('/registrarse')
@@ -153,19 +213,18 @@ def iniciar_sesion():
         comprobar_email_normal = cur.execute("SELECT correo_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
         comprobar_email_veterinario = cur.execute("SELECT correo_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
 
-        
-        comprobar_password_veterinario = cur.execute("SELECT contraseña_veterinario FROM veterinario WHERE contraseña_veterinario LIKE %s", [encrypt_password])
-
         # Comprobaciones
         # Comprobación usuario
         if comprobar_email_normal:
             # Si se encuentra el correo en la tabla usuario
             # Comprobar si las contraseñas encriptadas coinciden
             comprobar_password_normal = cur.execute("SELECT contraseña_usuario FROM usuario WHERE correo_usuario LIKE %s", [email])
-            pass_normal = cur.fetchall()
-            if check_password_hash(str(pass_normal[0]), password):
+            query = cur.fetchall()
+            pass_normal = query[0]
+            if check_password_hash(pass_normal[0], password):
                 # El correo y contraseña coinciden, pasa a guardarse la sesión
                 session['email'] = email
+                session['tipo_usuario'] = 'normal'
                 return redirect(url_for('perfil'))
             else:
                 # Las contraseñas no coinciden
@@ -174,8 +233,12 @@ def iniciar_sesion():
         elif comprobar_email_veterinario:
             # Si se encuentra el correo en la tabla usuario
             # Comprobar si las contraseñas encriptadas coinciden
-            if comprobar_password_veterinario:
+            comprobar_password_veterinario = cur.execute("SELECT contraseña_veterinario FROM veterinario WHERE correo_veterinario LIKE %s", [email])
+            query = cur.fetchall()
+            pass_veterinario = query[0]
+            if check_password_hash(pass_veterinario[0], password):
                 session['email'] = email
+                session['tipo_usuario'] = 'veterinario'
                 return redirect(url_for('perfil'))
             else:
                 # Las contraseñas no coinciden
@@ -193,6 +256,14 @@ def perfil():
     if 'email' in session:
         return 'Iniciado sesión con el correo: %s' % escape(session['email'])
     return 'No has iniciado sessión'
+
+
+@app.route('/cerrar_sesion')
+def cerrar_sesion():
+    # Eliminar el correo y tipo de usuario de la sesión si están
+    session.pop('email', None)
+    session.pop('tipo_usuario', None)
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
