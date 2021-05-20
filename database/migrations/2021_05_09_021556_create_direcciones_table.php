@@ -15,6 +15,7 @@ class CreateDireccionesTable extends Migration
     {
         Schema::create('direcciones', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('veterinario_id');
             $table->string('colonia');
             $table->string('calle');
             $table->string('numero');
@@ -23,6 +24,8 @@ class CreateDireccionesTable extends Migration
             $table->string('pais');
             $table->string('cp');
             $table->timestamps();
+
+            $table->foreign('veterinario_id')->references('id')->on('veterinarios');
         });
     }
 

@@ -15,8 +15,6 @@ class CreateVeterinariosTable extends Migration
     {
         Schema::create('veterinarios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('direccion_id');
-            $table->unsignedBigInteger('cuenta_bancaria_id');
             $table->unsignedBigInteger('usuario_id');
             $table->string('rfc');
             $table->string('nombre_establecimiento');
@@ -24,8 +22,6 @@ class CreateVeterinariosTable extends Migration
             $table->boolean('verificado');
             $table->timestamps();
 
-            $table->foreign('direccion_id')->references('id')->on('direcciones');
-            $table->foreign('cuenta_bancaria_id')->references('id')->on('cuenta_bancaria');
             $table->foreign('usuario_id')->references('id')->on('usuarios');
         });
     }

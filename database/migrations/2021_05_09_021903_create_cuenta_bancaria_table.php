@@ -15,10 +15,13 @@ class CreateCuentaBancariaTable extends Migration
     {
         Schema::create('cuenta_bancaria', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('veterinario_id');
             $table->string('nombre_propietario');
             $table->string('numero_cuenta');
             $table->string('banco');
             $table->timestamps();
+
+            $table->foreign('veterinario_id')->references('id')->on('veterinarios');
         });
     }
 
