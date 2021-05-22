@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Usuario;
+use App\Models\Veterinario;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -65,15 +66,16 @@ class RegisteredUserController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'username' => 'required|string|max:255',
+            'nombre_establecimiento' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:usuarios',
             'password' => ['required', 'confirmed', Rules\Password::min(8)],
         ]);
 
-        $user = Usuario::create([
+        $user = Veterinario::create([
             'nombre' => $request->nombre,
             'apellidos' => $request->apellidos,
-            'username' => $request->username,
+            'nombre_establecimiento' => $request->username,
+            'nombre_propietario' => $request->nombre . ' ' . $request->apellidos,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

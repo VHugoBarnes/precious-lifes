@@ -26,11 +26,11 @@
                 <x-input id="apellidos" class="block mt-1 w-full" type="text" name="apellidos" :value="old('apellidos')" required autofocus />
             </div>
 
-            <!-- Nombre de usuario -->
+            <!-- Nombre establecimiento -->
             <div>
-                <x-label for="username" :value="__('Nombre de usuario')" />
+                <x-label for="nombre_establecimiento" :value="__('Nombre establecimiento')" />
 
-                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus />
+                <x-input id="nombre_establecimiento" class="block mt-1 w-full" type="text" name="nombre_establecimiento" :value="old('nombre_establecimiento')" required autofocus />
             </div>
 
             <!-- Email Address -->
