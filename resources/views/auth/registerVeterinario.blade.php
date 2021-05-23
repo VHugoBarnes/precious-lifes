@@ -26,6 +26,13 @@
                 <x-input id="apellidos" class="block mt-1 w-full" type="text" name="apellidos" :value="old('apellidos')" required autofocus />
             </div>
 
+            <!-- RFC -->
+            <div>
+                <x-label for="rfc" :value="__('RFC')" />
+
+                <x-input id="rfc" class="block mt-1 w-full" type="text" name="rfc" :value="old('rfc')" required autofocus />
+            </div>
+
             <!-- Nombre establecimiento -->
             <div>
                 <x-label for="nombre_establecimiento" :value="__('Nombre establecimiento')" />

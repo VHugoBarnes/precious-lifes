@@ -66,18 +66,26 @@ class RegisteredUserController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
+            'rfc' => 'required|string|max:255',
             'nombre_establecimiento' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:usuarios',
             'password' => ['required', 'confirmed', Rules\Password::min(8)],
         ]);
 
-        $user = Veterinario::create([
+        $user = Usuario::create([
             'nombre' => $request->nombre,
             'apellidos' => $request->apellidos,
-            'nombre_establecimiento' => $request->username,
-            'nombre_propietario' => $request->nombre . ' ' . $request->apellidos,
             'email' => $request->email,
+            'username' => $request->nombre_establecimiento,
             'password' => Hash::make($request->password),
+        ]);
+
+        $veterinario = Veterinario::create([
+            'usuario_id' => $user->id,
+            'rfc' => $request->rfc,
+            'nombre_establecimiento' => $request->nombre_establecimiento,
+            'nombre_propietario' => $request->nombre . ' ' . $request->apellidos,
+            'verificado' => 0
         ]);
 
         Auth::login($user);
