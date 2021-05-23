@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Usuario;
 use App\Models\Veterinario;
@@ -51,6 +52,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Ingresar en la tabla pivot los id's correspondientes
+        $role_id = Role::where('roles', 'like', 'Usuario')->first('id');        
+        $user->role()->attach($role_id);
+
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
@@ -87,6 +92,10 @@ class RegisteredUserController extends Controller
             'nombre_propietario' => $request->nombre . ' ' . $request->apellidos,
             'verificado' => 0
         ]);
+
+        // Ingresar en la tabla pivot los id's correspondientes
+        $role_id = Role::where('roles', 'like', 'Veterinario')->first('id');        
+        $user->role()->attach($role_id);
 
         Auth::login($user);
 

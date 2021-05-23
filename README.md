@@ -13,3 +13,11 @@ Repositorio oficial del proyecto precious lifes.
 7. Crea una base de datos en MySQL llamada `precious_lifes`.
 8. Edita el archivo `.env` con los datos de la base de datos en MySQL (líneas 13 a 15).
 9. Corre las migraciones con el comando `php artisan migrate:fresh`.
+
+# Funciones que realiza
+- Registro e inicio de sesión de usuarios.
+- Vista para cambiar datos de usuario.
+- Veterinarios dan de alta animales.
+- Vista para ver animales.
+- Vista para ver un solo animal.
+- Ruta para donar (Recoge datos bancarios).
