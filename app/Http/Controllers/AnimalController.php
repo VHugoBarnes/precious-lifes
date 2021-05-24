@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Animal;
 use App\Models\Veterinario;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -68,5 +69,12 @@ class AnimalController extends Controller
         return view('animal.ver', [
             'animal' => $animal
         ]);
+    }
+
+    public function getImage($filename)
+    {
+        $file = Storage::disk('animales')->get($filename);
+
+        return new Response($file, 200);
     }
 }

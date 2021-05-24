@@ -91,6 +91,8 @@ Route::get('/animales/{id}', [AnimalController::class, 'view'])
     ->where(['id' => '[0-9]+'])
     ->name('animal');
 
+Route::get('/image/file/{filename}', [AnimalController::class, 'getImage'])->name('image.file');
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// DONACIONES ///////////////////////////////////
 Route::get('/donar/{id}', [DonacionController::class, 'makeDonation'])

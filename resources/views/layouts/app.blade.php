@@ -7,7 +7,7 @@
         <meta name="author" content="" />
         <title>Precious Lifes</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/huella.png" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('assets/huella.png') }}" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -21,7 +21,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand" href="#page-top"><img src="assets/img/precious-lifes-logo.png" alt="..." /></a>
+                <a class="navbar-brand" href="#page-top"><img src="{{ asset('img/precious-lifes-logo.png') }}" alt="..." /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars ms-1"></i>
@@ -33,9 +33,22 @@
                         <li class="nav-item"><a class="nav-link" href="#about">¿QUIÉNES SOMOS?</a></li>
                         <li class="nav-item"><a class="nav-link" href="#team">EQUIPO PL</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">CONTACTO</a></li>
+                        @guest
                         <li class="nav-item"><a class="nav-link" href="{{ route('registro') }}">REGISTRATE COMO USUARIO</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('registro-veterinario') }}">REGISTRATE COMO VETERINARIO</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">INICIA SESIÓN</a></li>
+                        @endguest
+                        @auth
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">CERRAR SESIÓN</a></li> --}}
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Cerrar sesión') }}
+                                </x-dropdown-link>
+                            </form>
+                        @endauth
                     </ul>
                 </div>
             </div>
