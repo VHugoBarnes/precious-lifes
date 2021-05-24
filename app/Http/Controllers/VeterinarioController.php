@@ -10,22 +10,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VeterinarioController extends Controller {
+
     public function edit() {
-        return view('veterinario.editar');
+        // Datos del veterinario
+        $usuario_id = Auth::user()->id;
+        $veterinario_id = Veterinario::where('usuario_id', $usuario_id)->pluck('id');
+        $veterinario = Veterinario::find($veterinario_id)[0];
+
+        return view('veterinario.editar', [
+            'veterinario' => $veterinario
+        ]);
     }
 
     public function update(Request $request) {
         // Recogemos el id del usuario identificado
-        $usuario = Usuario::find(Auth::user()->id);
+        $usuario_id = Auth::user()->id;
+        $usuario = Usuario::find($usuario_id);
 
         // Recogemos el id del veterinario
-        $veterinario_id = Veterinario::where('usuario_id', $usuario);
+        $veterinario_id = Veterinario::where('usuario_id', $usuario_id)->pluck('id')[0];
         $veterinario = Veterinario::find($veterinario_id);
 
         $validate = $this->validate($request, [
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:usuarios',
+            'email' => 'required|string|max:255|unique:usuarios,email,'. Auth::user()->id,
             'rfc' => 'required|string|max:255',
             'nombre_establecimiento' => 'required|string|max:255'
         ]);
@@ -39,68 +48,7 @@ class VeterinarioController extends Controller {
         $veterinario->nombre_establecimiento = $request->nombre_establecimiento;
         $veterinario->save();
 
-        return redirect()->back();
+        return redirect()->route('home');
     }
 
-    public function addAddress() {
-        return view('veterinario.direccion');
-    }
-
-    public function storeAddress(Request $request) {
-        // Recogemos el id del usuario identificado
-        $usuario = Usuario::find(Auth::user()->id);
-
-        // Recogemos el id del veterinario
-        $veterinario_id = Veterinario::where('usuario_id', $usuario);
-        $veterinario = Veterinario::find($veterinario_id);
-
-        $validate = $this->validate($request, [
-            'colonia' => 'required|string|max:255',
-            'calle' => 'required|string|max:255',
-            'numero' => 'required|string|max:255',
-            'localidad' => 'required|string|max:255',
-            'estado' => 'required|string|max:255',
-            'pais' => 'required|string|max:255',
-            'cp' => 'required|string|max:255',
-        ]);
-
-        $direccion = Direccion::create([
-            'veterinario_id' => $veterinario_id,
-            'colonia' => $request->colonia,
-            'calle' => $request->calle,
-            'numero' => $request->numero,
-            'localidad' => $request->localidad,
-            'estado' => $request->estado,
-            'pais' => $request->pais,
-            'cp' => $request->cp
-        ]);
-
-        return redirect()->back();
-    }
-
-    public function addBankAccount() {
-        return view('veterinario.cuentaBanco');
-    }
-
-    public function storeBankAccount(Request $request) {
-        // Recogemos el id del usuario identificado
-        $usuario = Usuario::find(Auth::user()->id);
-
-        // Recogemos el id del veterinario
-        $veterinario_id = Veterinario::where('usuario_id', $usuario);
-        $veterinario = Veterinario::find($veterinario_id);
-
-        $validate = $this->validate($request, [
-            'nombre_propietario' => 'required|string|max:255',
-            'numero_cuenta' => 'required|string|max:255',
-            'banco' => 'required|string|max:255',
-        ]);
-
-        $cuenta_bancaria = Cuenta_Bancaria::create([
-            'veterinario_id' => $veterinario_id,
-            'nombre_propietario' => $request->nombre_propietario,
-            
-        ]);
-
-    }
 }

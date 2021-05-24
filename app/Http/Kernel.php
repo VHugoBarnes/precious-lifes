@@ -64,6 +64,10 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'userPermission' => \App\Http\Middleware\UserPermission::class,
-        'veterinarioPermission' => \App\Http\Middleware\VeterinarioPermission::class
+        'veterinarioPermission' => \App\Http\Middleware\VeterinarioPermission::class,
+        'redirectIfAddressAlreadyRegistered' => \App\Http\Middleware\RedirectIfAddressAlreadyRegistered::class,
+        'redirectIfAddressNotExists' => \App\Http\Middleware\RedirectIfBankAccountNotExists::class,
+        'redirectIfBankAccountAlreadyRegistered' => \App\Http\Middleware\RedirectIfBankAccountAlreadyRegistered::class,
+        'redirectIfBankAccountNotExists' => \App\Http\Middleware\RedirectIfBankAccountNotExists::class,
     ];
 }

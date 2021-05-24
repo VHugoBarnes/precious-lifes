@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/registrarse', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
-                ->name('register');
+                ->name('registro');
 
 Route::post('/registrarse', [RegisteredUserController::class, 'store'])
                 ->middleware('guest');
 
 Route::get('/registrarse-veterinario', [RegisteredUserController::class, 'createVeterinario'])
                 ->middleware('guest')
-                ->name('register');
+                ->name('registro-veterinario');
 
 Route::post('/registrarse-veterinario', [RegisteredUserController::class, 'storeVeterinario'])
                 ->middleware('guest');

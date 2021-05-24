@@ -10,7 +10,12 @@ class UsuarioController extends Controller
 {
     public function edit()
     {
-        return view('usuarios.editar');
+        $usuario_id = Auth::user()->id;
+        $usuario = Usuario::find($usuario_id);
+
+        return view('usuarios.editar', [
+            'usuario' => $usuario
+        ]);
     }
 
     public function update(Request $request)
@@ -31,6 +36,6 @@ class UsuarioController extends Controller
         $usuario->email = $request->email;
         $usuario->save();
 
-        return redirect()->back();
+        return redirect()->route('home');
     }
 }

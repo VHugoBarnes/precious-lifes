@@ -27,7 +27,7 @@ class UserPermission
 
         $role = Role::find($role_id);
         
-        if($role == 'Usuario') {
+        if($role->roles == 'Usuario') {
             return $next($request);
         } else {
             return redirect('dashboard');

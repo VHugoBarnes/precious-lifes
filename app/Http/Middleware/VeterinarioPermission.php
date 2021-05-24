@@ -27,10 +27,10 @@ class VeterinarioPermission
 
         $role = Role::find($role_id);
         
-        if($role == 'Veterinario') {
+        if($role->roles == 'Veterinario') {
             return $next($request);
         } else {
-            return redirect('dashboard');
+            return redirect()->route('home');
         }
     }
 }
