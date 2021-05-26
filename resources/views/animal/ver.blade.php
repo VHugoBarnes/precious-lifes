@@ -1,26 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="page-section bg-light" id="portfolio">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">AYUDA</h2>
-                <h3 class="section-subheading text-muted">Animalitos listos para recibir tu ayuda.</h3>
+    <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="..." alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-6 mb-4">
-                    <!-- Portfolio item 1-->
-                    <div class="portfolio-item">
-                        <img class="img-fluid" src="{{ route('image.file', ['filename' => $animal->imagen]) }}"
-                            alt="..." />
-                        <div class="portfolio-caption">
-                            <div class="portfolio-caption-heading">Conoce a {{ $animal->nombre }}</div>
-                            <div class="portfolio-caption-subheading text-muted">Listo para recibir tu ayuda</div>
-                            <a href="{{ route('donar', ['id' => $animal->id]) }}">Donar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </section>
+      </div>
 @endsection

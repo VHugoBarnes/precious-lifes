@@ -28,7 +28,12 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        @guest
                         <li class="nav-item"><a class="nav-link" href="#services">¿CÓMO DONAR?</a></li>
+                        @endguest
+                        @auth
+                        <li class="nav-item"><a class="nav-link" href="{{ route('animales') }}">DONAR</a></li>
+                        @endauth
                         <li class="nav-item"><a class="nav-link" href="#portfolio">AYUDA</a></li>
                         <li class="nav-item"><a class="nav-link" href="#about">¿QUIÉNES SOMOS?</a></li>
                         <li class="nav-item"><a class="nav-link" href="#team">EQUIPO PL</a></li>
