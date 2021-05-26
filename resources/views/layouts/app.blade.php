@@ -31,19 +31,25 @@
                         @guest
                         <li class="nav-item"><a class="nav-link" href="#services">¿CÓMO DONAR?</a></li>
                         @endguest
-                        @auth
-                        <li class="nav-item"><a class="nav-link" href="{{ route('animales') }}">DONAR</a></li>
-                        @endauth
+                        @guest
                         <li class="nav-item"><a class="nav-link" href="#portfolio">AYUDA</a></li>
                         <li class="nav-item"><a class="nav-link" href="#about">¿QUIÉNES SOMOS?</a></li>
                         <li class="nav-item"><a class="nav-link" href="#team">EQUIPO PL</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">CONTACTO</a></li>
-                        @guest
                         <li class="nav-item"><a class="nav-link" href="{{ route('registro') }}">REGISTRATE COMO USUARIO</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('registro-veterinario') }}">REGISTRATE COMO VETERINARIO</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">INICIA SESIÓN</a></li>
                         @endguest
                         @auth
+                            @usuario('Usuario')
+                            <li class="nav-item"><a class="nav-link" href="{{ route('animales') }}">DONAR</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('editar-usuario') }}">EDITAR PERFIL</a></li>
+                            @elseusuario('Veterinario')
+                            <li class="nav-item"><a class="nav-link" href="{{ route('dar-alta') }}">DAR DE ALTA</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('editar-veterinario') }}">EDITAR PERFIL</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('editar-direccion') }}">EDITAR DIRECCIÓN</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('editar-cuenta') }}">EDITAR CUENTA BANCARIA</a></li>
+                            @endusuario
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 {{-- <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">CERRAR SESIÓN</a></li> --}}

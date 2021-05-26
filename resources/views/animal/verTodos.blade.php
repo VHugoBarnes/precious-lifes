@@ -3,7 +3,7 @@
 @section('content')
     <section class="page-section bg-light" id="portfolio">
         <div class="container">
-            <div class="text-center">
+            <div class="text-center mt-5 pt-5">
                 <h2 class="section-heading text-uppercase">AYUDA</h2>
                 <h3 class="section-subheading text-muted">Animalitos listos para recibir tu ayuda.</h3>
             </div>

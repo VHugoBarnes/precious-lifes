@@ -7,26 +7,26 @@
                     <h2 class="title">AÑADE TU CUENTA BANCARIA</h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('registrar-cuenta') }}">
+                    <form method="POST" action="{{ route('editar-cuenta') }}">
                         @csrf
                         <div class="form-row">
                             <div class="name">Nombre del propietario</div>
                             <div class="value">
-                                <input class="input--style-6" type="text" name="nombre_propietario" placeholder="Ej. César Hernández" required>
+                                <input class="input--style-6" type="text" name="nombre_propietario" value="{{ $cuenta->nombre_propietario }}" required>
                             </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="name">Número de cuenta</div>
                             <div class="value">
-                                <input class="input--style-6" type="text" name="numero_cuenta" placeholder="Ej. 22499923221" required>
+                                <input class="input--style-6" type="text" name="numero_cuenta" value="{{ $cuenta->numero_cuenta }}" required>
                             </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="name">Banco</div>
                             <div class="value">
-                                <input class="input--style-6" type="text" name="banco" placeholder="Ej. Banco México" required>
+                                <input class="input--style-6" type="text" name="banco" value="{{ $cuenta->banco }}" required>
                             </div>
                         </div>
 

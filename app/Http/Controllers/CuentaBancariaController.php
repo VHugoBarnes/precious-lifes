@@ -40,4 +40,21 @@ class CuentaBancariaController extends Controller
 
     }
     
+    public function edit()
+    {
+        // Obtener id del veterinario
+        $veterinario_id = Auth::user()->id;
+        $veterinario_id = Veterinario::where('usuario_id', $veterinario_id)->pluck('id');
+        // Obtener dirección del veterinario
+        $cuenta = Cuenta_Bancaria::where('veterinario_id', $veterinario_id)->get()[0];
+
+        return view('veterinario.cuentaBancoEditar', [
+            'cuenta' => $cuenta
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+
+    }
 }

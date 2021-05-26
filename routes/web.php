@@ -56,12 +56,20 @@ Route::post('/editar-veterinario', [VeterinarioController::class, 'update'])
 ///////////////////////////////// DIRECCIONES /////////////////////////////////
 
 Route::get('/registrar-direccion', [DireccionController::class, 'addAddress'])
-    ->middleware(['auth', 'veterinarioPermission'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfAddressAlreadyRegistered'])
     ->name('registrar-direccion');
 
 Route::post('/registrar-direccion', [DireccionController::class, 'storeAddress'])
     ->middleware(['auth', 'veterinarioPermission', 'redirectIfAddressAlreadyRegistered'])
     ->name('registrar-direccion');
+
+Route::get('/editar-direccion', [DireccionController::class, 'edit'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfAddressNotExists'])
+    ->name('editar-direccion');
+
+Route::post('/editar-direccion', [DireccionController::class, 'update'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfAddressNotExists'])
+    ->name('editar-direccion');
 
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// CUENTA BANCARIA ///////////////////////////////
@@ -73,6 +81,14 @@ Route::get('/registrar-cuenta', [CuentaBancariaController::class, 'addBankAccoun
 Route::post('/registrar-cuenta', [CuentaBancariaController::class, 'storeBankAccount'])
     ->middleware(['auth', 'veterinarioPermission', 'redirectIfBankAccountAlreadyRegistered'])
     ->name('registrar-cuenta');
+
+Route::get('/editar-cuenta', [CuentaBancariaController::class, 'edit'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfBankAccountNotExists'])
+    ->name('editar-cuenta');
+
+Route::post('/editar-cuenta', [CuentaBancariaController::class, 'update'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfBankAccountNotExists'])
+    ->name('editar-cuenta');
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// ANIMALES ///////////////////////////////////

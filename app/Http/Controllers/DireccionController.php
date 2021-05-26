@@ -8,8 +8,7 @@ use App\Models\Usuario;
 use App\Models\Veterinario;
 use Illuminate\Support\Facades\Auth;
 
-class DireccionController extends Controller
-{
+class DireccionController extends Controller {
     public function addAddress() {
         return view('veterinario.direccion');
     }
@@ -43,6 +42,48 @@ class DireccionController extends Controller
             'pais' => $request->pais,
             'cp' => $request->cp
         ]);
+
+        return redirect()->route('home');
+    }
+
+    public function edit() {
+        // Obtener id del veterinario
+        $veterinario_id = Auth::user()->id;
+        $veterinario_id = Veterinario::where('usuario_id', $veterinario_id)->pluck('id');
+        // Obtener dirección del veterinario
+        $direccion = Direccion::where('veterinario_id', $veterinario_id)->get()[0];
+
+        return view('veterinario.direccionEditar', [
+            'direccion' => $direccion
+        ]);
+    }
+
+    public function update(Request $request) {
+        // Obtener id del veterinario
+        $veterinario_id = Auth::user()->id;
+        $veterinario_id = Veterinario::where('usuario_id', $veterinario_id)->pluck('id');
+        // Obtener dirección del veterinario
+        $direccion = Direccion::where('veterinario_id', $veterinario_id)->pluck('id')[0];
+        $direccion = Direccion::find($direccion);
+
+        $validate = $this->validate($request, [
+            'colonia' => 'required|string|max:255',
+            'calle' => 'required|string|max:255',
+            'numero' => 'required|string|max:255',
+            'localidad' => 'required|string|max:255',
+            'estado' => 'required|string|max:255',
+            'pais' => 'required|string|max:255',
+            'cp' => 'required|string|max:255',
+        ]);
+        
+        $direccion->colonia = $request->colonia;
+        $direccion->calle = $request->calle;
+        $direccion->numero = $request->numero;
+        $direccion->localidad = $request->localidad;
+        $direccion->estado = $request->estado;
+        $direccion->pais = $request->pais;
+        $direccion->cp = $request->cp;
+        $direccion->save();
 
         return redirect()->route('home');
     }
