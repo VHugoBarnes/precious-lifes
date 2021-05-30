@@ -66,7 +66,7 @@ class Kernel extends HttpKernel
         'userPermission' => \App\Http\Middleware\UserPermission::class,
         'veterinarioPermission' => \App\Http\Middleware\VeterinarioPermission::class,
         'redirectIfAddressAlreadyRegistered' => \App\Http\Middleware\RedirectIfAddressAlreadyRegistered::class,
-        'redirectIfAddressNotExists' => \App\Http\Middleware\RedirectIfBankAccountNotExists::class,
+        'redirectIfAddressNotExists' => \App\Http\Middleware\RedirectIfAddressNotExists::class,
         'redirectIfBankAccountAlreadyRegistered' => \App\Http\Middleware\RedirectIfBankAccountAlreadyRegistered::class,
         'redirectIfBankAccountNotExists' => \App\Http\Middleware\RedirectIfBankAccountNotExists::class,
     ];

@@ -23,7 +23,7 @@ class RedirectIfBankAccountNotExists
         $cuenta_bancaria = Cuenta_Bancaria::where('veterinario_id', $veterinario_id)->get();
 
         if(count($cuenta_bancaria) == 0) {
-            return redirect()->back();
+            return redirect()->route('registrar-cuenta');
         } else {
             return $next($request);
         }

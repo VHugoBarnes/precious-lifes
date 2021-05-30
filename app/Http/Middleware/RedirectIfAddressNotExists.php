@@ -20,10 +20,11 @@ class RedirectIfAddressNotExists
     public function handle(Request $request, Closure $next)
     {
         $veterinario_id = Veterinario::where('usuario_id', Auth::user()->id)->pluck('id');
+        
         $direccion = Direccion::where('veterinario_id', $veterinario_id)->get();
         
         if(count($direccion) == 0) {
-            return redirect()->back();
+            return redirect()->route('registrar-direccion');
         } else {
             return $next($request);
         }

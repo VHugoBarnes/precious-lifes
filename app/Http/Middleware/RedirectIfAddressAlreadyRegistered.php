@@ -25,7 +25,7 @@ class RedirectIfAddressAlreadyRegistered
         if(count($direccion) == 0) {
             return $next($request);
         } else {
-            return redirect()->back();
+            return redirect()->route('editar-direccion');
         }
     }
 }

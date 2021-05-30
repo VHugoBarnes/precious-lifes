@@ -7,7 +7,7 @@
                     <h2 class="title">REGISTRA TU DIRECCIÓN</h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('registar-direccion') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('registrar-direccion') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-row">
                             <div class="name">Colonia</div>

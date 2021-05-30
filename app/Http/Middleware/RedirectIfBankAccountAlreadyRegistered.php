@@ -25,7 +25,7 @@ class RedirectIfBankAccountAlreadyRegistered
         if(count($cuenta_bancaria) == 0) {
             return $next($request);
         } else {
-            return redirect()->back();
+            return redirect()->route('editar-cuenta');
         }
     }
 }

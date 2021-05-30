@@ -49,7 +49,7 @@ class AnimalController extends Controller
             'fondos' => $request->fondos,
         ]);
 
-        return redirect()->route('animal', ['id' => $animal->id]);
+        return redirect()->route('animales');
     }
 
     public function viewAll()
