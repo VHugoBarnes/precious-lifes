@@ -30,7 +30,7 @@ class UserPermission
         if($role->roles == 'Usuario') {
             return $next($request);
         } else {
-            return redirect('dashboard');
+            return redirect('home');
         }
     }
 }

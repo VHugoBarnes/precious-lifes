@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Animal;
 use App\Models\Cuenta_Bancaria;
 use App\Models\Direccion;
 use App\Models\Usuario;
@@ -49,6 +50,23 @@ class VeterinarioController extends Controller {
         $veterinario->save();
 
         return redirect()->route('home');
+    }
+
+    public function controlPanel()
+    {
+        // Recogemos el id del usuario identificado
+        $usuario_id = Auth::user()->id;
+        $usuario = Usuario::find($usuario_id);
+
+        // Recogemos el id del veterinario
+        $veterinario_id = Veterinario::where('usuario_id', $usuario_id)->pluck('id')[0];
+        $veterinario = Veterinario::find($veterinario_id);
+        $animales = Animal::where('veterinario_id', $veterinario_id)->get();
+
+        return view('veterinario.panelControl', [
+            'animales' => $animales,
+            'veterinario' => $veterinario
+        ]);
     }
 
 }

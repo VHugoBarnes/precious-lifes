@@ -38,4 +38,19 @@ class UsuarioController extends Controller
 
         return redirect()->route('home');
     }
+
+    public function controlPanel()
+    {
+        // Recogemos el id del usuario identificado
+        $usuario_id = Auth::user()->id;
+        $usuario = Usuario::find($usuario_id);
+
+        // Recoger las transacciones
+        $transacciones = $usuario->transacciones;
+
+        return view('usuarios.panelControl', [
+            'usuario' => $usuario,
+            'transacciones' => $transacciones
+        ]);
+    }
 }

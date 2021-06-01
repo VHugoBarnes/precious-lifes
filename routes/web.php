@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CuentaBancariaController;
 use App\Http\Controllers\DireccionController;
 use App\Http\Controllers\DonacionController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VeterinarioController;
 use Illuminate\Support\Facades\Route;
@@ -19,13 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('test.home');
-})->name('home');
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dashboard');
+Route::get('/',[HomeController::class, 'index'])->name('home');
 
 require __DIR__.'/auth.php';
 // require __DIR__.'/test.php';
@@ -41,6 +36,10 @@ Route::post('/editar-usuario', [UsuarioController::class, 'update'])
     ->middleware(['auth', 'userPermission'])
     ->name('editar-usuario');
 
+Route::get('/panel-control/usuario', [UsuarioController::class, 'controlPanel'])
+->middleware(['auth', 'userPermission'])
+->name('panel-usuario');
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// VETERINARIO /////////////////////////////////
 
@@ -51,6 +50,10 @@ Route::get('/editar-veterinario', [VeterinarioController::class, 'edit'])
 Route::post('/editar-veterinario', [VeterinarioController::class, 'update'])
     ->middleware(['auth', 'veterinarioPermission'])
     ->name('editar-veterinario');
+
+Route::get('/panel-control/veterinario', [VeterinarioController::class, 'controlPanel'])
+    ->middleware(['auth', 'veterinarioPermission'])
+    ->name('panel-veterinario');
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// DIRECCIONES /////////////////////////////////
@@ -108,6 +111,20 @@ Route::get('/animales/{id}', [AnimalController::class, 'view'])
     ->name('animal');
 
 Route::get('/image/file/{filename}', [AnimalController::class, 'getImage'])->name('image.file');
+
+Route::get('/animal/{id}', [AnimalController::class, 'edit'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfVeterinarioDidnotRegisterAnimal'])
+    ->where(['id'=>'[0-9]+'])
+    ->name('editar-animal');
+
+Route::put('/animal/{id}', [AnimalController::class, 'update'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfVeterinarioDidnotRegisterAnimal'])
+    ->where(['id'=>'[0-9]+']);
+
+Route::delete('/animal/{id}', [AnimalController::class, 'delete'])
+    ->middleware(['auth', 'veterinarioPermission', 'redirectIfVeterinarioDidnotRegisterAnimal'])
+    ->where(['id' => '[0-9]+'])
+    ->name('eliminar-animal');
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// DONACIONES ///////////////////////////////////

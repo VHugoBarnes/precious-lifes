@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'redirectIfAddressNotExists' => \App\Http\Middleware\RedirectIfAddressNotExists::class,
         'redirectIfBankAccountAlreadyRegistered' => \App\Http\Middleware\RedirectIfBankAccountAlreadyRegistered::class,
         'redirectIfBankAccountNotExists' => \App\Http\Middleware\RedirectIfBankAccountNotExists::class,
+        'redirectIfVeterinarioDidnotRegisterAnimal' => \App\Http\Middleware\RedirectIfVeterinarioDidnotRegisterAnimal::class
     ];
 }

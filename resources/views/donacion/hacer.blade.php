@@ -4,7 +4,7 @@
         <div class="wrapper wrapper--w900">
             <div class="card card-6">
                 <div class="card-heading">
-                    <h2 class="title">HAZ UNA DONACIÓN A: {{ $animal->nombre }}</h2>
+                    <h2 class="title">HAZ UNA DONACIÓN A: {{ $animal->nombre }} | Cantidad necesitada: ${{ $animal->fondos }}</h2>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('donar', ['id' => $animal->id]) }}">
