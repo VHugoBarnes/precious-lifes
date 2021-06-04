@@ -1,6 +1,47 @@
 # Precious Lifes
 Repositorio oficial del proyecto precious lifes.
 
+# Acerca del proyecto
+Precious lifes es un proyecto sin fines de lucro que permite a veterinarias recibir donaciones de usuarios voluntarios para ayudar a esterilizar y/o sanar padecimientos que tengan los animalitos de la calle.    
+El objetivo de Precious Lifes es el de terminar de una manera no invasiva o violenta la sobrepoblación de animales en las calles, así evitando que los animalitos tengan que vivir en la calle.
+
+Este es un prototipo para la clase de programación web, por lo tanto algunas funciones como la de realizar pagos no están implementadas, también como otras funciones básicas de cualquier sistema web, esto por las limitantes del equipo de trabajo y los contenidos de la materia.
+
+# Imágenes del proyecto
+
+## Pantalla principal
+![](img/1.png)
+
+## Registro de veterinarios
+![](img/2.png)
+
+## Pantalla con sesión iniciada
+![](img/3.png)
+
+## Registro de usuarios
+![](img/4.png)
+
+## Vista del perfil de usuarios
+![](img/5.png)
+
+## Vista del perfil de veterinarios
+![](img/11.png)
+
+## Edición de datos de usuario
+![](img/6.png)
+
+## Vista de animalitos registrados
+![](img/7.png)
+
+## Vista detallada del animalito
+![](img/8.png)
+
+## Vista de Donación
+![](img/9.png)
+
+## Registro de animalito (Para veterinarios)
+![](img/10.png)
+
 # Como contribuir
 1. Primero que nada tienes que asegurarte que te haya añadido como colaborador.
 2. Instalar composer. [Lo puedes descargar aquí](https://getcomposer.org/download/), buscar el instalador para Windows, es cuestión de darle siguiente y siguiente.
